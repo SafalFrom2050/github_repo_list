@@ -14,8 +14,8 @@ class RepositorySummary {
 
     return RepositorySummary(
       id: json["id"] as int,
-      fullName: json["fullName"] as String,
-      avatarUrl: owner["avatarUrl"] as String,
+      fullName: json["full_name"] as String,
+      avatarUrl: owner["avatar_url"] as String,
     );
   }
 
