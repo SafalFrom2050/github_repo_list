@@ -1,4 +1,5 @@
 import 'package:github_repo_list/features/repositories/data/github_api_client.dart';
+import 'package:github_repo_list/features/repositories/models/repository_detail.dart';
 import 'package:github_repo_list/features/repositories/models/repository_search_page.dart';
 import 'package:github_repo_list/features/repositories/models/repository_summary.dart';
 
@@ -29,5 +30,15 @@ class GithubRepository {
       totalCount: jsonResponse["total_count"] as int,
       incompleteResults: jsonResponse["incomplete_results"] as bool,
     );
+  }
+
+  Future<RepositoryDetail> getRepositoryDetails({
+    required String fullName,
+  }) async {
+    final jsonResponse = await _apiClient.getRepositoryDetails(
+      fullName: fullName,
+    );
+
+    return RepositoryDetail.fromJson(jsonResponse);
   }
 }

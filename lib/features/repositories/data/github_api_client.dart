@@ -11,13 +11,25 @@ class GithubApiClient {
     required String query,
     int page = 1,
     int perPage = 10,
-  }) async {
+  }) {
     final uri = Uri.https('api.github.com', '/search/repositories', {
       'q': query,
       'page': page.toString(),
       'per_page': perPage.toString(),
     });
 
+    return _getJson(uri);
+  }
+
+  Future<Map<String, dynamic>> getRepositoryDetails({
+    required String fullName,
+  }) {
+    final uri = Uri.https('api.github.com', '/repos/$fullName');
+
+    return _getJson(uri);
+  }
+
+  Future<Map<String, dynamic>> _getJson(Uri uri) async {
     final response = await _client
         .get(
           uri,

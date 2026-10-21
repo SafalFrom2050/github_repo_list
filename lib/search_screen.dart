@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:github_repo_list/features/repositories/presentation/detail/repository_detail_screen.dart';
 import 'package:github_repo_list/features/repositories/presentation/search/search_controller.dart';
 import 'package:github_repo_list/features/repositories/presentation/search/search_state.dart';
 
@@ -139,6 +140,14 @@ class SearchScreen extends ConsumerWidget {
                 child: const Icon(Icons.person),
               ),
               title: Text(repository.fullName),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        RepositoryDetailScreen(fullName: repository.fullName),
+                  ),
+                );
+              },
             );
           },
         ),
