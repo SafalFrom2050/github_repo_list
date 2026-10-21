@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:github_repo_list/features/repositories/presentation/detail/repository_detail_screen.dart';
 import 'package:github_repo_list/features/repositories/presentation/search/search_controller.dart';
 import 'package:github_repo_list/features/repositories/presentation/search/search_state.dart';
+import 'package:github_repo_list/features/repositories/presentation/widgets/repository_tile.dart';
 
 class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});
@@ -133,22 +134,7 @@ class SearchScreen extends ConsumerWidget {
 
             final repository = items[index];
 
-            return ListTile(
-              leading: CircleAvatar(
-                foregroundImage: NetworkImage(repository.avatarUrl),
-                onForegroundImageError: (_, _) {},
-                child: const Icon(Icons.person),
-              ),
-              title: Text(repository.fullName),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        RepositoryDetailScreen(fullName: repository.fullName),
-                  ),
-                );
-              },
-            );
+            return RepositoryTile(repository: repository);
           },
         ),
       ),

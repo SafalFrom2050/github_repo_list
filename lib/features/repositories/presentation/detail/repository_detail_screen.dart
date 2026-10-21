@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:github_repo_list/features/favorites/presentation/widgets/favorite_button.dart';
 import 'package:github_repo_list/features/repositories/presentation/detail/repository_detail_provider.dart';
 
 class RepositoryDetailScreen extends ConsumerWidget {
@@ -60,6 +61,10 @@ class RepositoryDetailScreen extends ConsumerWidget {
             Text(
               'Subscribers: ${detail.subscribersCount}',
               textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: FavoriteButton(repository: detail.summary),
             ),
           ],
         ),
