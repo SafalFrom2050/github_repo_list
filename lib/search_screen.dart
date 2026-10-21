@@ -30,16 +30,15 @@ class SearchScreen extends ConsumerWidget {
             },
           ),
         ),
-        Expanded(child: _buildBody(searchState, ref)),
+        Expanded(child: _buildBody(context, searchState, ref)),
       ],
     );
   }
 
-  Widget _buildBody(SearchState state, WidgetRef ref) {
+  Widget _buildBody(BuildContext context, SearchState state, WidgetRef ref) {
     if (state.query.isEmpty) {
       return const Center(child: Text('Search for Repositories on Github'));
     }
-
     if (state.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -70,19 +69,80 @@ class SearchScreen extends ConsumerWidget {
       return const Center(child: Text('No Results'));
     }
 
-    return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final repository = items[index];
-        return ListTile(
-          leading: CircleAvatar(
-            foregroundImage: NetworkImage(repository.avatarUrl),
-            onForegroundImageError: (_, _) {},
-            child: const Icon(Icons.person),
-          ),
-          title: Text(repository.fullName),
-        );
+    final showFooter =
+        state.isLoadingMore || state.loadingMoreErrorMessage != null;
+
+    void maybeLoadMore(ScrollMetrics metrics) {
+      if (metrics.axis != Axis.vertical || metrics.extentAfter > 200) {
+        return;
+      }
+
+      Future<void>.microtask(() {
+        if (!context.mounted) return;
+
+        final latest = ref.read(searchControllerProvider);
+
+        if (latest.loadingMoreErrorMessage != null) return;
+
+        ref.read(searchControllerProvider.notifier).loadNextPage();
+      });
+    }
+
+    return NotificationListener<ScrollMetricsNotification>(
+      onNotification: (notification) {
+        if (notification.depth == 0) {
+          maybeLoadMore(notification.metrics);
+        }
+        return false;
       },
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification.depth == 0) {
+            maybeLoadMore(notification.metrics);
+          }
+          return false;
+        },
+        child: ListView.builder(
+          itemCount: items.length + (showFooter ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (index == items.length) {
+              return Padding(
+                padding: const EdgeInsets.all(16),
+                child: state.isLoadingMore
+                    ? const Center(child: CircularProgressIndicator())
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            state.loadingMoreErrorMessage!,
+                            textAlign: TextAlign.center,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              ref
+                                  .read(searchControllerProvider.notifier)
+                                  .loadNextPage();
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
+              );
+            }
+
+            final repository = items[index];
+
+            return ListTile(
+              leading: CircleAvatar(
+                foregroundImage: NetworkImage(repository.avatarUrl),
+                onForegroundImageError: (_, _) {},
+                child: const Icon(Icons.person),
+              ),
+              title: Text(repository.fullName),
+            );
+          },
+        ),
+      ),
     );
   }
 }

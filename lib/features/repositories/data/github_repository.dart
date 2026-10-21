@@ -5,6 +5,8 @@ import 'package:github_repo_list/features/repositories/models/repository_summary
 class GithubRepository {
   final GithubApiClient _apiClient;
 
+  static const pageSize = 10;
+
   GithubRepository({required GithubApiClient apiClient})
     : _apiClient = apiClient;
 
@@ -15,6 +17,7 @@ class GithubRepository {
     final jsonResponse = await _apiClient.searchRepositories(
       query: query,
       page: page,
+      perPage: pageSize,
     );
 
     final items = (jsonResponse["items"] as List)
