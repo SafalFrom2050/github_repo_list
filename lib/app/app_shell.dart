@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_list/favorites_screen.dart';
-import 'package:github_repo_list/search_screen.dart';
+import 'package:github_repo_list/features/favorites/presentation/favorites_screen.dart';
+import 'package:github_repo_list/features/repositories/presentation/search/search_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
