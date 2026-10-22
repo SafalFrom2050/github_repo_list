@@ -3,6 +3,8 @@ import 'package:github_repo_list/app/dependencies.dart';
 import 'package:github_repo_list/features/favorites/data/favorites_repository.dart';
 import 'package:github_repo_list/features/repositories/models/repository_summary.dart';
 
+
+/// Responsible for syncing favorites across screens and the shared preferences.
 class FavoritesController
     extends AsyncNotifier<Map<int, RepositorySummary>> {
   late FavoritesRepository _repository;
@@ -67,6 +69,7 @@ class FavoritesController
     try {
       await save;
     } catch (_) {
+      // makes sure that the failed save is the latest change before updating the state. if no longer the latest one, ignore the error.
       if (ref.mounted && changeId == _changeId) {
         state = AsyncData(_lastSaved);
       }

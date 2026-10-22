@@ -7,7 +7,7 @@ import 'package:github_repo_list/features/repositories/presentation/search/searc
 class SearchController extends Notifier<SearchState> {
   late GithubRepository _repository;
 
-  int _requestId = 0;
+  int _requestId = 0;    // identifies current search request. since we are only interested in the current request, older ones can be ignored.
 
   @override
   SearchState build() {

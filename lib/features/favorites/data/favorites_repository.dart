@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:github_repo_list/features/repositories/models/repository_summary.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+/// Contains repository summaries, required for the favorites feature.
 class FavoritesRepository {
   final SharedPreferencesAsync _preferences;
 
