@@ -1,16 +1,75 @@
-# github_repo_list
+# GitHub Repository List
 
-A new Flutter project.
+A Flutter app for searching public GitHub repositories, viewing their details, and saving them as favorites locally.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- GitHub repository search using keywords, with infinite scrolling (page size of 30).
+- Repository details, with subscriber count.
+- Synchronized favorites across all screens.
+- Favorites saved locally using `shared_preferences`.
 
-A few resources to get you started if this is your first Flutter project:
+## Development environment
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter 3.47.7
+- Dart 3.13.5
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Run
+
+Connect a device or start an emulator, then run:
+
+```bash
+flutter pub get
+flutter run
+```
+
+## Build
+
+Android release APK:
+
+```bash
+flutter build apk --release
+```
+
+iOS release build requires macOS, Xcode and a signing configuration:
+
+```bash
+flutter build ios --release
+```
+
+## Checks
+
+```bash
+flutter analyze
+flutter test
+```
+
+## Implementation notes
+
+- Features are organized into repositories and favorites, with data and
+  presentation code kept together within each feature.
+- Riverpod provides dependencies and shares application state.
+- Favorites update immediately, with rollback if saving fails.
+- Favorites store only the repository ID, full name, and avatar URL.
+- Search ignores outdated responses when a newer search has started.
+- HTTP access and local storage can be replaced with fakes in tests.
+
+## API usage
+
+The app uses GitHub’s public REST API without authentication:
+
+- `GET /search/repositories` with `q`, `page`, and `per_page=30`.
+- `GET /repos/{owner}/{repo}` for repository details, including
+  `subscribers_count`.
+
+Search pagination stops at GitHub’s 1,000-result limit. Rate-limit
+responses show a specific message asking the user to wait before retrying.
+
+Favorites are stored locally.
+
+## Validation
+
+- Physical device: Huawei P10 lite running Android 8.
+- Manual checks passed: search, pagination, repository details, favorites synchronization, persistence after app restart, and retries.
+- Automated tests: 5 tests passed (2 unit tests, 3 widget tests).
+- Rate-limit messages displayed correctly in Search, pagination, and Details.
