@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="github_repo_list"
+        android:label="Github Repo List"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
