@@ -14,6 +14,8 @@ A Flutter app for searching public GitHub repositories, viewing their details, a
 - Flutter 3.47.7
 - Dart 3.13.5
 
+> Android release builds were verified with JDK 21 and Gradle 9.3.1.
+
 ## Run
 
 Connect a device or start an emulator, then run:
