@@ -5,6 +5,8 @@ import 'package:github_repo_list/features/repositories/data/github_repository.da
 import 'package:github_repo_list/features/repositories/models/repository_search_page.dart';
 import 'package:github_repo_list/features/repositories/presentation/search/search_state.dart';
 
+
+/// Search and pagination state with protection against outdated responses.
 class SearchController extends Notifier<SearchState> {
   late GithubRepository _repository;
 

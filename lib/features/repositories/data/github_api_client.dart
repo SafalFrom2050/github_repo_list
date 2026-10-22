@@ -3,11 +3,17 @@ import 'dart:convert';
 import 'package:github_repo_list/features/repositories/data/github_rate_limit_exception.dart';
 import 'package:http/http.dart';
 
+
+/// A client for interacting with the GitHub API. (Repository search and details endpoints)
 class GithubApiClient {
   final Client _client;
 
   GithubApiClient({required Client client}) : _client = client;
 
+
+  /// Fetches one page of repository search results matching [query].
+  ///
+  /// Throws [GithubRateLimitException] when GitHub limits requests.
   Future<Map<String, dynamic>> searchRepositories({
     required String query,
     int page = 1,

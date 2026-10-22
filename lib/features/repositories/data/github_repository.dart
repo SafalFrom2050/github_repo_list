@@ -3,6 +3,8 @@ import 'package:github_repo_list/features/repositories/models/repository_detail.
 import 'package:github_repo_list/features/repositories/models/repository_search_page.dart';
 import 'package:github_repo_list/features/repositories/models/repository_summary.dart';
 
+
+/// Github repository responses mapped into application models.
 class GithubRepository {
   final GithubApiClient _apiClient;
 

@@ -4,7 +4,7 @@ import 'package:github_repo_list/features/repositories/models/repository_summary
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-/// Contains repository summaries, required for the favorites feature.
+/// Local persistence for favorite repository summaries.
 class FavoritesRepository {
   final SharedPreferencesAsync _preferences;
 
