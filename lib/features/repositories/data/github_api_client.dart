@@ -10,7 +10,7 @@ class GithubApiClient {
   Future<Map<String, dynamic>> searchRepositories({
     required String query,
     int page = 1,
-    int perPage = 10,
+    int perPage = 30,
   }) {
     final uri = Uri.https('api.github.com', '/search/repositories', {
       'q': query,

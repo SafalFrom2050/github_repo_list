@@ -6,7 +6,7 @@ import 'package:github_repo_list/features/repositories/models/repository_summary
 class GithubRepository {
   final GithubApiClient _apiClient;
 
-  static const pageSize = 10;
+  static const pageSize = 30;
 
   GithubRepository({required GithubApiClient apiClient})
     : _apiClient = apiClient;
