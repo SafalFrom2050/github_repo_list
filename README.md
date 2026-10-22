@@ -54,6 +54,8 @@ flutter test
 - Search ignores outdated responses when a newer search has started.
 - HTTP access and local storage can be replaced with fakes in tests.
 
+> `shared_preferences_android` 2.5.1 has a [known issue with release builds](https://github.com/flutter/flutter/issues/194649). As a workaround, the suggested ProGuard rules were added to `android/app/proguard-rules.pro`.
+
 ## API usage
 
 The app uses GitHub’s public REST API without authentication:
