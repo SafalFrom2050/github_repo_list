@@ -37,7 +37,32 @@ class FavoritesScreen extends ConsumerWidget {
         final items = favorites.values.toList();
 
         if (items.isEmpty) {
-          return const Center(child: Text('No favorites yet'));
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.star_border,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No favorites yet',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Find a repository in Search, then tap '
+                        'its star to save it here.',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          );
         }
 
         return ListView.builder(

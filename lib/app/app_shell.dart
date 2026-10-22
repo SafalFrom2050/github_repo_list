@@ -15,7 +15,7 @@ class _AppShellState extends State<AppShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_selectedIndex == 0 ? "Search" : "Favorites")),
+      appBar: AppBar(title: Text(_selectedIndex == 0 ? "Search Repositories" : "Favorites")),
 
       body: SafeArea(
         child: IndexedStack(

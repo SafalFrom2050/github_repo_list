@@ -15,12 +15,12 @@ class SearchScreen extends ConsumerWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(16),
-          child: TextField(
-            textInputAction: TextInputAction.search,
-            decoration: const InputDecoration(
-              labelText: 'Search',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
+          child: SearchBar(
+            hintText: 'Flutter, dart, ai-agent...',
+            leading: const Icon(Icons.search),
+            elevation: WidgetStatePropertyAll(0),
+            padding: const WidgetStatePropertyAll(
+              EdgeInsets.symmetric(horizontal: 16),
             ),
             onSubmitted: (query) =>
                 ref.read(searchControllerProvider.notifier).search(query),
@@ -38,7 +38,32 @@ class SearchScreen extends ConsumerWidget {
 
   Widget _buildBody(BuildContext context, SearchState state, WidgetRef ref) {
     if (state.query.isEmpty) {
-      return const Center(child: Text('Search for Repositories on Github'));
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.travel_explore,
+                size: 64,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Discover repositories',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Search GitHub by keyword, or open Favorites '
+                    'below to revisit your saved repositories.',
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
     }
     if (state.isLoading) {
       return const Center(child: CircularProgressIndicator());
