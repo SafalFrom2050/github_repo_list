@@ -69,7 +69,10 @@ Favorites are stored locally.
 
 ## Validation
 
-- Physical device: Huawei P10 lite running Android 8.
+- Physical device:
+  - Huawei P10 lite running Android 8
+  - iPhone 16e running iOS 26.3
+  - Google Pixel 4 running Android 13
 - Manual checks passed: search, pagination, repository details, favorites synchronization, persistence after app restart, and retries.
 - Automated tests: 5 tests passed (2 unit tests, 3 widget tests).
 - Rate-limit messages displayed correctly in Search, pagination, and Details.
