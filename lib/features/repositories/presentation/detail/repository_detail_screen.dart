@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:github_repo_list/features/favorites/presentation/widgets/favorite_button.dart';
+import 'package:github_repo_list/features/repositories/data/github_rate_limit_exception.dart';
 import 'package:github_repo_list/features/repositories/presentation/detail/repository_detail_provider.dart';
 
 class RepositoryDetailScreen extends ConsumerWidget {
@@ -16,17 +17,17 @@ class RepositoryDetailScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text('Repository Details')),
       body: detailState.when(
         skipLoadingOnRefresh: false,
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Could not load repository details.',
+                Text(
+                  error is GithubRateLimitException
+                      ? error.message
+                      : 'Could not load repository details.',
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
@@ -63,9 +64,7 @@ class RepositoryDetailScreen extends ConsumerWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            Center(
-              child: FavoriteButton(repository: detail.summary),
-            ),
+            Center(child: FavoriteButton(repository: detail.summary)),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:github_repo_list/app/dependencies.dart';
+import 'package:github_repo_list/features/repositories/data/github_rate_limit_exception.dart';
 import 'package:github_repo_list/features/repositories/data/github_repository.dart';
 import 'package:github_repo_list/features/repositories/models/repository_search_page.dart';
 import 'package:github_repo_list/features/repositories/presentation/search/search_state.dart';
@@ -7,7 +8,8 @@ import 'package:github_repo_list/features/repositories/presentation/search/searc
 class SearchController extends Notifier<SearchState> {
   late GithubRepository _repository;
 
-  int _requestId = 0;    // identifies current search request. since we are only interested in the current request, older ones can be ignored.
+  int _requestId =
+      0; // identifies current search request. since we are only interested in the current request, older ones can be ignored.
 
   @override
   SearchState build() {
@@ -44,13 +46,15 @@ class SearchController extends Notifier<SearchState> {
         page: 1,
         hasMore: _hasMorePages(result, 1),
       );
-    } catch (_) {
+    } catch (error) {
       if (!ref.mounted || requestId != _requestId) {
         return;
       }
       state = SearchState(
         query: query,
-        errorMessage: "Something went wrong while loading the repositories.",
+        errorMessage: error is GithubRateLimitException
+            ? error.message
+            : 'Could not load repositories.',
       );
     }
   }
@@ -96,7 +100,7 @@ class SearchController extends Notifier<SearchState> {
         ],
         totalCount: nextPage.totalCount,
         incompleteResults:
-        currentResult.incompleteResults || nextPage.incompleteResults,
+            currentResult.incompleteResults || nextPage.incompleteResults,
       );
 
       state = SearchState(
@@ -105,7 +109,7 @@ class SearchController extends Notifier<SearchState> {
         page: nextPageNumber,
         hasMore: _hasMorePages(nextPage, nextPageNumber),
       );
-    } catch (_) {
+    } catch (error) {
       if (!ref.mounted || requestId != _requestId) {
         return;
       }
@@ -115,10 +119,11 @@ class SearchController extends Notifier<SearchState> {
         result: currentResult,
         page: currentState.page,
         hasMore: currentState.hasMore,
-        loadingMoreErrorMessage: 'Could not load more. Please retry.',
+        loadingMoreErrorMessage: error is GithubRateLimitException
+            ? error.message
+            : 'Could not load more. Please retry.',
       );
     }
-
   }
 
   bool _hasMorePages(RepositorySearchPage response, int page) {

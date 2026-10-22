@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:github_repo_list/features/repositories/data/github_rate_limit_exception.dart';
 import 'package:http/http.dart';
 
 class GithubApiClient {
@@ -40,6 +41,10 @@ class GithubApiClient {
         )
         .timeout(const Duration(seconds: 15));
 
+    if (_isRateLimited(response)) {
+      throw const GithubRateLimitException();
+    }
+
     if (response.statusCode != 200) {
       throw Exception(
         'HTTP ${response.statusCode} : Failed to load repositories.',
@@ -53,5 +58,27 @@ class GithubApiClient {
     }
 
     return jsonResponse;
+  }
+
+  bool _isRateLimited(Response response) {
+    if (response.statusCode == 429) return true;
+    if (response.statusCode != 403) return false;
+
+    if (response.headers['x-ratelimit-remaining'] == '0' ||
+        response.headers.containsKey('retry-after')) {
+      return true;
+    }
+
+    try {
+      final body = jsonDecode(response.body);
+      final message = body is Map<String, dynamic>
+          ? body['message']
+          : null;
+
+      return message is String &&
+          message.toLowerCase().contains('rate limit');
+    } on FormatException {
+      return false;
+    }
   }
 }
